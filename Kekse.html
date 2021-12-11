@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="safari-pinned-tab.png">
+
+    <title>Cookies</title>
+
+    <!— Bootstrap core CSS —>
+    <link href="https://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+    <!— Custom styles for this template —>
+    <link href="https://getbootstrap.com/docs/4.0/examples/starter-template/starter-template.css" rel="stylesheet">
+  </head>
+  <body>
+
+    <header>
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="#">emilano.de</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="nextcloud.emilano.de">NextCloud</a>
+            </li>
+          <form class="form-inline mt-2 mt-md-0">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Suchen</button>
+          </form>
+        </div>
+      </nav>
+    </header>
+
+    <main role="main" class="container">
+	<div class="starter-template">
+		<h1>Cookies</h1>
+		<div>emilano.de verwendet zurzeit nur Cookies zur bereitstellung eines beutzerfreundlichen Dienstes. Laut Gesetz dürfen nur Cookies die zur Nutzung von emilano.de Notwendig sind auf ihrem Gerät speichern, alle andere Cookies und Cookies von drittanbiertern m&uuml;ssen erst von ihnen genehmigt werden. </div> 
+	<br><br><body onload="load()">
+<p id="username"></p>
+<img src="https://openclipart.org/download/249534/1464300474.svg" height="100px" width="100px" onclick="add()"></img>
+<p id="zähler"></p>
+<input onclick="reset()" type="button" value="reset stats"></input><br><br>
+Ranking: <br>
+<textarea id="chatwindow2" rows="5" cols="10" readonly></textarea>
+<textarea id="chatwindow" rows="5" cols="20" readonly></textarea>
+</body>
+
+<script>
+
+var cookies;
+var rankingfile1 = "rankingC.txt";
+var rankingfile2 = "rankingU.txt";
+var intUpdate;
+var waittime = 3000;
+var arrC = new Array(5);
+
+
+function load(){
+    cookies = 0;
+    cookies = getCookie("cookies");
+    document.getElementById("zähler").innerHTML = cookies;
+    checkCookie();
+    read_cont();
+    read_cont2();
+}
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires="+d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+function checkCookie() {
+    var user = getCookie("username");
+    if (user != "") {
+        document.getElementById("username").innerHTML = "Hey, " + user + "! Ready to click some tasty Cookies?";
+    } else {
+        user = prompt("Please enter your name:", "");
+        if (user != "" && user != null) {
+            setCookie("username", user, 365);
+            document.getElementById("username").innerHTML = "Hey, " + user + "! Ready to click some tasty Cookies?";
+        }
+    }
+}
+
+function reset(){
+    setCookie("username","",365);
+    setCookie("cookies","",365);
+    document.getElementById("zähler").innerHTML = "please reload page.";
+}
+
+var pl = [false,false,false,false,false];
+
+function add() {
+    cookies ++;
+    document.getElementById("zähler").innerHTML = cookies;
+    setCookie("cookies",cookies,365);
+    request_rank(cookies,getCookie("username"));
+}
+
+var http_request=false;
+var http_request2=false;
+var http_request3=false;
+
+/* http_request for writing */
+function ajax_request(url){http_request=false;if(window.XMLHttpRequest){http_request=new XMLHttpRequest();if(http_request.overrideMimeType){http_request.overrideMimeType('text/xml');}}else if(window.ActiveXObject){try{http_request=new ActiveXObject("Msxml2.XMLHTTP");}catch(e){try{http_request=new ActiveXObject("Microsoft.XMLHTTP");}catch(e){}}}
+if(!http_request){alert('Giving up :( Cannot create an XMLHTTP instance');return false;}
+http_request.onreadystatechange=alertContents;http_request.open('GET',url,true);http_request.send(null);}
+function alertContents(){if(http_request.readyState==4){if(http_request.status==200){rec_response(http_request.responseText);}else{}}}
+
+/* http_request for reading */
+function ajax_request2(url){http_request2=false;if(window.XMLHttpRequest){http_request2=new XMLHttpRequest();if(http_request2.overrideMimeType){http_request2.overrideMimeType('text/xml');}}else if(window.ActiveXObject){try{http_request2=new ActiveXObject("Msxml2.XMLHTTP");}catch(e){try{http_request2=new ActiveXObject("Microsoft.XMLHTTP");}catch(e){}}}
+if(!http_request2){alert('Giving up :( Cannot create an XMLHTTP instance');return false;}
+http_request2.onreadystatechange=alertContents2;http_request2.open('GET',url,true);http_request2.send(null);}
+function alertContents2(){if(http_request2.readyState==4){if(http_request2.status==200){rec_chatcontent(http_request2.responseText);}else{}}}
+
+function read_cont(){
+
+    pl =  [false,false,false,false,false];
+
+    zeit = new Date(); ms = (zeit.getHours() * 24 * 60 * 1000) + (zeit.getMinutes() * 60 * 1000) + (zeit.getSeconds() * 1000) + zeit.getMilliseconds();
+    ajax_request2(rankingfile1 + "?x=" + ms); 
+}
+
+
+function rec_chatcontent(cont1) {
+    if (cont1 != "") {
+        out1 = unescape(cont1);
+        if (false) { out1 = ""; while (cont1.indexOf("\n") > -1) { out1 = cont1.substr(0, cont1.indexOf("\n")) + "\n" + out1; cont1 = cont1.substr(cont1.indexOf("\n") + 1); out1 = unescape(out1); } }
+        if (chatwindow.value != out1) { display_msg(out1); }
+        intUpdate=window.setTimeout("read_cont()", waittime);
+    }
+}
+
+function display_msg(msg1){
+    chatwindow.value = msg1.trim();
+    $arrC = msg1.split("\n");
+}
+
+/* http_request for reading */
+function ajax_request3(url){http_request3=false;if(window.XMLHttpRequest){http_request3=new XMLHttpRequest();if(http_request3.overrideMimeType){http_request3.overrideMimeType('text/xml');}}else if(window.ActiveXObject){try{http_request3=new ActiveXObject("Msxml2.XMLHTTP");}catch(e){try{http_request3=new ActiveXObject("Microsoft.XMLHTTP");}catch(e){}}}
+if(!http_request3){alert('Giving up :( Cannot create an XMLHTTP instance');return false;}
+http_request3.onreadystatechange=alertContents3;http_request3.open('GET',url,true);http_request3.send(null);}
+function alertContents3(){if(http_request3.readyState==4){if(http_request3.status==200){rec_chatcontent2(http_request3.responseText);}else{}}}
+
+function read_cont2(){
+    zeit = new Date(); ms = (zeit.getHours() * 24 * 60 * 1000) + (zeit.getMinutes() * 60 * 1000) + (zeit.getSeconds() * 1000) + zeit.getMilliseconds();
+    ajax_request3(rankingfile2 + "?x=" + ms); 
+}
+
+
+function rec_chatcontent2(cont1) {
+    if (cont1 != "") {
+        out1 = unescape(cont1);
+        if (false) { out1 = ""; while (cont1.indexOf("\n") > -1) { out1 = cont1.substr(0, cont1.indexOf("\n")) + "\n" + out1; cont1 = cont1.substr(cont1.indexOf("\n") + 1); out1 = unescape(out1); } }
+        if (chatwindow2.value != out1) { display_msg2(out1); }
+        intUpdate=window.setTimeout("read_cont2()", waittime);
+    }
+}
+
+function display_msg2(msg1){
+    chatwindow2.value = msg1.trim();
+}
+
+function request_rank(cookies,username){
+    ajax_request("AddRank.php?c=" + escape(cookies) + "&n=" + escape(username));
+}
+</script>
+</div>
+
+	<hr class="featurette-divider">
+	
+      <!— FOOTER —>
+      <footer class="container">
+        <p class="float-right"><a href="#">Back to top</a></p>
+        <p>&copy; 2020 emilano.de &middot; <a href="#">Kekse</a> &middot; <a href="impressum.html">Impressum</a></p>
+      </footer>
+    </main>
+
+    <!— Bootstrap core JavaScript
+    ================================================== —>
+    <!— Placed at the end of the document so the pages load faster —>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../../../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <script src="https://getbootstrap.com/assets/js/vendor/popper.min.js"></script>
+    <script src="https://getbootstrap.com/dist/js/bootstrap.min.js"></script>
+    <!— Just to make our placeholder images work. Don't actually copy the next line! —>
+    <script src="https://getbootstrap.com/assets/js/vendor/holder.min.js"></script>
+  </body>
+</html>
+
