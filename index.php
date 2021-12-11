@@ -7,7 +7,7 @@
     <main role="main" class="container">
         <div class="p-5 mb-4 bg-light rounded-3" style="background-image: url(assets/pcb_.jpg); no-repeat right right; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;">
           <div class="container-fluid py-5">
-            <h1 class="display-5 fw-bold">emiLANo Server Network</h1>
+            <h1 class="display-5 fw-bold">emiLANo Server</h1>
             <p class="col-md-8 fs-4">New redesign with toggleable darkmode by system settings <br> toggle your pc/phone darkmode to enjoy!</p>
             <button class="btn btn-primary btn-lg" type="button">About</button>
           </div>
