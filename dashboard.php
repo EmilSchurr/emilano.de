@@ -4,7 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Satisfactory">
+    <meta name="description" content="emiLANo Admin PAnel for Bots and Servers">
     <meta name="author" content="hyperabstrakt">
     <meta http-equiv="Pragma" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Expires" content="0">
@@ -21,7 +21,7 @@
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #1c6513;">
       <div class="container">
-        <a class="navbar-brand" href="index.php">
+        <a class="navbar-brand" href="../../index.php">
           <img src="../assets/hyper_logo_w.png" width="33" height="33" class="d-inline-block align-top" alt="">
            Admin Dashboard
         </a>
