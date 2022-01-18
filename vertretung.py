@@ -8,6 +8,7 @@ pURL = "https://*****/*/*/auth/login.php"
 kURL = "https://*****/login.php"
 session = requests.Session()
 f = session.get(kURL)
+
 def getCsrf():
   soup = BeautifulSoup(f.text, 'html.parser')
   csrfv = soup.find('input', {'name': 'csrf'})
@@ -15,7 +16,7 @@ def getCsrf():
   csrfm = strcsrfv[40:]
   csrf = csrfm[:-3]
   return(csrf)
-getCsrf()
+
 login_data = {
   'csrf': getCsrf(),
 	'username': '*****',
@@ -31,17 +32,9 @@ def getEssen():
 def getVertretung():
 	vertretung = session.get("https://*****/service/vertretungsplan")
 	soup = BeautifulSoup(vertretung.text, 'html.parser')
-	vg = soup.find('div', {'class': 'main_center'})
-	vgstr = str(vg)
-	return (vgstr)
-vgstr = getVertretung()
-getVertretung()
+	vg = str(soup.find('div', {'class': 'main_center'}))
+	return (vg)
 
-if vgstr == "None":
-	getVertretung()
-	vgstr = getVertretung()
-
-else:
-  g = open('/var/www/html/assets/content/v.php','w')
-  g.write(vgstr)
-  g.close()
+ g = open('/var/www/html/assets/content/v.php','w')
+ g.write(getVertretung())
+ g.close()
